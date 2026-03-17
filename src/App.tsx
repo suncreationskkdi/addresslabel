@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Printer, Search, FileText, Upload, Trash2, Download, Palette, ArrowsUpFromLine, Type, Sliders } from 'lucide-react';
+import { FileUpload } from './components/FileUpload';
+import { FileList } from './components/FileList';
 
 function App() {
+  const [showUploadManager, setShowUploadManager] = useState(false);
   const [addresses, setAddresses] = useState<Array<{ name: string; details: string[] }>>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDragging, setIsDragging] = useState(false);
@@ -124,6 +127,13 @@ function App() {
             </div>
 
             <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setShowUploadManager(!showUploadManager)}
+                className="flex items-center gap-2 bg-slate-600 hover:bg-slate-700 text-white px-4 py-3 rounded-xl font-black text-sm transition-all uppercase"
+              >
+                <FileText size={18} />
+                {showUploadManager ? 'Hide' : 'Manage'} Files
+              </button>
               {addresses.length > 0 && (
                 <>
                   <button onClick={clearData} title="Clear Data" className="p-3 text-slate-400 hover:text-red-500 transition-colors bg-slate-50 rounded-xl">
@@ -253,6 +263,13 @@ function App() {
           </div>
         </div>
       </div>
+
+      {showUploadManager && (
+        <div className="max-w-6xl mx-auto mb-8 print:hidden space-y-6">
+          <FileUpload onFileUploaded={() => {}} />
+          <FileList />
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 print:grid-cols-3 print:gap-4">
