@@ -224,29 +224,54 @@ function App() {
 
           <div className="p-4">
             {addresses.length === 0 ? (
-              <div
-                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-                onDragLeave={() => setIsDragging(false)}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                  const file = e.dataTransfer.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (ev) => parseData(ev.target?.result as string);
-                    reader.readAsText(file);
-                  }
-                }}
-                className={`border-4 border-dashed rounded-xl p-12 text-center transition-all ${
-                  isDragging ? 'border-blue-500 bg-blue-50' : 'border-slate-200 bg-slate-50'
-                }`}
-              >
-                <Upload className="mx-auto mb-4 text-slate-300" size={48} />
-                <p className="text-slate-800 font-black uppercase text-lg">Drop your Address File here</p>
-                <input type="file" accept=".txt" onChange={handleFileUpload} className="hidden" id="fileInput" />
-                <label htmlFor="fileInput" className="cursor-pointer bg-blue-600 text-white px-8 py-3 rounded-xl mt-4 inline-block font-black uppercase shadow-lg shadow-blue-100 hover:scale-105 transition-transform">
-                  Choose File
-                </label>
+              <div className="space-y-6">
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
+                  <h3 className="text-sm font-black text-blue-900 uppercase mb-3 flex items-center gap-2">
+                    <FileText size={16} />
+                    Expected File Format
+                  </h3>
+                  <div className="bg-white rounded-lg p-4 font-mono text-xs text-slate-700 whitespace-pre-wrap border border-blue-100">
+{`--------------------------
+JOHN DOE
+123 Main Street
+City, State 12345
+Country
+--------------------------
+JANE SMITH
+456 Oak Avenue
+Another City, State 67890
+Country
+--------------------------`}
+                  </div>
+                  <p className="text-xs text-blue-800 font-bold mt-3">
+                    Each address block should be separated by a line of dashes (---). First line is the name, followed by address lines.
+                  </p>
+                </div>
+
+                <div
+                  onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragging(false);
+                    const file = e.dataTransfer.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (ev) => parseData(ev.target?.result as string);
+                      reader.readAsText(file);
+                    }
+                  }}
+                  className={`border-4 border-dashed rounded-xl p-12 text-center transition-all ${
+                    isDragging ? 'border-blue-500 bg-blue-50' : 'border-slate-200 bg-slate-50'
+                  }`}
+                >
+                  <Upload className="mx-auto mb-4 text-slate-300" size={48} />
+                  <p className="text-slate-800 font-black uppercase text-lg">Drop your Address File here</p>
+                  <input type="file" accept=".txt" onChange={handleFileUpload} className="hidden" id="fileInput" />
+                  <label htmlFor="fileInput" className="cursor-pointer bg-blue-600 text-white px-8 py-3 rounded-xl mt-4 inline-block font-black uppercase shadow-lg shadow-blue-100 hover:scale-105 transition-transform">
+                    Choose File
+                  </label>
+                </div>
               </div>
             ) : (
               <div className="relative">
